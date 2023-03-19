@@ -1,0 +1,62 @@
+[gd_scene load_steps=9 format=3 uid="uid://7ns70huqnvco"]
+
+[ext_resource type="Texture2D" uid="uid://b6w83nokw3oyv" path="res://sky_box/kloofendal_48d_partly_cloudy_puresky_4k.exr" id="1_1ok00"]
+[ext_resource type="Material" uid="uid://h0omavrnsek5" path="res://materials/floor.tres" id="2_dgnap"]
+[ext_resource type="PackedScene" uid="uid://cabgrr2bvykhs" path="res://spider_bot/spider_bot.tscn" id="3_6ojgc"]
+[ext_resource type="Texture2D" uid="uid://k3uxfhm56wlt" path="res://textures/prototype/orange/texture_09.png" id="3_r0c1f"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_yd8v4"]
+panorama = ExtResource("1_1ok00")
+
+[sub_resource type="Sky" id="Sky_55lkc"]
+sky_material = SubResource("PanoramaSkyMaterial_yd8v4")
+
+[sub_resource type="Environment" id="Environment_w5p4p"]
+background_mode = 2
+sky = SubResource("Sky_55lkc")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+reflected_light_source = 2
+tonemap_mode = 2
+ssao_enabled = true
+ssil_enabled = true
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_awb4i"]
+albedo_texture = ExtResource("3_r0c1f")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[node name="Main" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_w5p4p")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.0723431, 0.175728, -0.981777, 0, 0.984356, 0.17619, 0.99738, -0.0127461, 0.0712114, -20.9662, 5.13979, 7.6435)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17, 0)
+use_collision = true
+size = Vector3(80, 40, 80)
+material = ExtResource("2_dgnap")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGBox3D"]
+operation = 2
+size = Vector3(75, 35, 75)
+material = ExtResource("2_dgnap")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.799572, -17.725, -9.61878)
+radius = 16.6239
+radial_segments = 24
+rings = 12
+material = SubResource("StandardMaterial3D_awb4i")
+
+[node name="SpiderBot" parent="." instance=ExtResource("3_6ojgc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.78341, 11.9092)
